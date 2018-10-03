@@ -1,0 +1,108 @@
+<div class="col-md-8 mx-auto">
+    <div class="board-inner mb-4" id="status-buttons">
+        <ul class="nav nav-tabs" id="myTab">
+            <div class="liner"></div>
+            <!-- circular user icon -->
+            <li class="mr-2">
+                <a routerLink="/register/step1" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-toggle="tab" title="personal">
+                    <span class="round-tabs one">
+                        <i class="glyphicon glyphicon-user">Step 1</i>
+                    </span>
+                </a>
+            </li>
+            <!-- circular tasks icon -->
+            <li>
+                <a routerLink="/register/step2" routerLinkActive="active" data-toggle="tab" title="work">
+                    <span class="round-tabs two">
+                        <i class="glyphicon glyphicon-tasks">Step 2</i>
+                    </span> 
+                </a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+
+    <form *ngIf="currentStep == 'step1'" #signupStep1Form="ngForm" (ngSubmit)="onSubmit(signupStep1Form)" >
+        <div >
+            <div class="form-group">
+                <label>To whome you are creating this profile?</label>
+                <select 
+                name="profileFor" 
+                class="form-control" 
+                [(ngModel)]="profileFor" 
+                (ngModelChange)="selectProfile($event)"
+                [value]='2'>
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of profileForListKeys" [ngValue]="key">{{profileForList[key]}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="">Name:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="" class="d-block">Date Of Birth:</label>
+                <select name="dobdate" class="form-control col-md-2 d-inline mr-2">
+                    <option value="">--Day--</option>
+                    <option *ngFor="let n of days" value="{{n}}">{{n}}</option>
+                </select>
+
+                <select name="dobmonth" class="form-control col-md-2 d-inline mr-2">
+                    <option value="">--Month--</option>
+                    <option *ngFor="let n of months" value="{{n}}">{{n}}</option>
+                </select>
+
+                <select name="dobyear" class="form-control col-md-2 d-inline">
+                    <option value="">--Year--</option>
+                    <option *ngFor="let n of years" value="{{n}}">{{n}}</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="genderDisplayFlag">
+                <label for="">Gender:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="genderMale" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="gender" id="genderMale" value="1"> Male
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label for="genderFemale" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="2"> Female
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label for="genderTransgender" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="gender" id="genderTransgender" value="3"> Transgender
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">Mobile:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Email:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Password:</label>
+                <input type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="">Confirm Password:</label>
+                <input type="text" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-success">Next</button>
+            </div>
+        </div>
+    </form>
+
+    <form #signupStep1Form="ngForm" (ngSubmit)="onSubmit(signupStep1Form)" >
+        <div *ngIf="currentStep == 'step2'">
+            Step 2
+        </div>
+    </form>
+</div>

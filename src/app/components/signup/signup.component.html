@@ -1,0 +1,555 @@
+<div class="col-md-8 mx-auto">
+    <!-- <div class="board-inner mb-4" id="status-buttons">
+        <ul class="nav nav-tabs" id="myTab">
+            <div class="liner"></div>
+            <li class="mr-2">
+                <a routerLink="/register/step1" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-toggle="tab" title="personal">
+                    <span class="round-tabs one">
+                        <i class="glyphicon glyphicon-user">Step 1</i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a routerLink="/register/step2" routerLinkActive="active" data-toggle="tab" title="work">
+                    <span class="round-tabs two">
+                        <i class="glyphicon glyphicon-tasks">Step 2</i>
+                    </span> 
+                </a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div> -->
+
+    <form *ngIf="currentStep == 'step1'" #signupStep1Form="ngForm" (ngSubmit)="onSubmit(signupStep1Form)" >
+        <div class="container">
+            <h2>Basic Details</h2>
+            <div class="form-group">
+                <label>To whome you are creating this profile?</label>
+                <select 
+                    name="profileFor" 
+                    class="form-control" 
+                    [(ngModel)]="step1.profileFor" 
+                    (ngModelChange)="selectProfile($event)"
+                    required
+                    pattern="[1-9]" 
+                    #step1ProfileFor="ngModel"
+                    [ngClass]="{'is-invalid':step1ProfileFor.errors && step1ProfileFor.touched}"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(profileForList)" [ngValue]="key">{{profileForList[key]}}</option>
+                </select>
+                <div [hidden]="!step1ProfileFor.errors?.pattern" class="invalid-feedback">
+                    Please choose the option to whome you are creating this profile.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">{{userLabel}} Name:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="name"
+                    [(ngModel)]="step1.name"
+                    #step1Name="ngModel"
+                    required
+                    minlength="3"
+                    [ngClass]="{'is-invalid':step1Name.errors && step1Name.touched}"
+                />
+                <div [hidden]="!step1Name.errors?.required" class="invalid-feedback">
+                    Please enter {{userLabel | lowercase}} name.
+                </div>
+                <div [hidden]="!step1Name.errors?.minlength" class="invalid-feedback">
+                    {{userLabel}} name should be mininum 3 characters.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="d-block">Date Of Birth:</label>
+                <select name="dobdate" class="form-control col-md-2 d-inline mr-2">
+                    <option value="0">--Day--</option>
+                    <option *ngFor="let n of days" value="{{n}}">{{n}}</option>
+                </select>
+
+                <select name="dobmonth" class="form-control col-md-2 d-inline mr-2">
+                    <option value="">--Month--</option>
+                    <option *ngFor="let n of months" value="{{n}}">{{n}}</option>
+                </select>
+
+                <select name="dobyear" class="form-control col-md-2 d-inline">
+                    <option value="">--Year--</option>
+                    <option *ngFor="let n of years" value="{{n}}">{{n}}</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="genderDisplayFlag">
+                <label for="">Gender:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="genderMale" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="gender" id="genderMale" [(ngModel)]="step1.gender" #step1Gender [value]="1"> Male
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label for="genderFemale" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="gender" id="genderFemale" [(ngModel)]="step1.gender" #step1Gender [value]="2"> Female
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label for="genderTransgender" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="gender" id="genderTransgender" [(ngModel)]="step1.gender" #step1Gender [value]="3"> Transgender
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">Mobile:</label>
+                <input 
+                    type="text" 
+                    class="form-control"
+                    [(ngModel)]="step1.mobile"
+                    #step1Mobile="ngModel"
+                    name="mobile"
+                    required
+                    pattern="^[6-9][0-9]{9}$" 
+                    [ngClass]="{'is-invalid':step1Mobile.errors && step1Mobile.touched}"
+                />
+                <div [hidden]="!step1Mobile.errors?.required" class="invalid-feedback">
+                    Please enter your mobile number.
+                </div>
+                <div [hidden]="!step1Mobile.errors?.pattern" class="invalid-feedback">
+                    Please enter valid mobile number.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">Email:</label>
+                <input 
+                    type="text" 
+                    class="form-control"
+                    name="email"
+                    [(ngModel)]="step1.email"
+                    #step1Email="ngModel"
+                    required
+                    pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+                    [ngClass]="{'is-invalid':step1Email.errors && step1Email.touched}"
+                />
+                <div [hidden]="!step1Email.errors?.required" class="invalid-feedback">
+                    Please enter email.
+                </div>
+                <div [hidden]="!step1Email.errors?.pattern" class="invalid-feedback">
+                    Please enter valid email.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">Password:</label>
+                <input 
+                    type="text" 
+                    class="form-control"
+                    name="password"
+                    [(ngModel)]="step1.password"
+                    #step1Password="ngModel"
+                    required
+                    minlength="6"
+                    [ngClass]="{'is-invalid':step1Password.errors && step1Password.touched}"
+                />
+                <div [hidden]="!step1Password.errors?.required" class="invalid-feedback">
+                    Please enter password.
+                </div>
+                <div [hidden]="!step1Password.errors?.minlength" class="invalid-feedback">
+                    Password should be mininum 6 characters.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Confirm Password:</label>
+                <input 
+                    type="text" 
+                    class="form-control"
+                    name="confirmPassword"
+                    [(ngModel)]="step1.confirmPassword"
+                    #step1ConfirmPassword="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step1ConfirmPassword.errors && step1ConfirmPassword.touched}"
+                >
+                <div [hidden]="!step1ConfirmPassword.errors?.required" class="invalid-feedback">
+                    Please enter confirm password.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-success" [disabled]="!signupStep1Form.form.valid">Next</button>
+            </div>
+        </div>
+    </form>
+
+    <form *ngIf="currentStep == 'step2'" #signupStep2Form="ngForm" (ngSubmit)="onComplete(signupStep2Form)" >
+        <div class="container">
+            <h4>You are almost done. Few more details from you.</h4>
+            
+            <h5>Religious Details</h5>
+            <div class="form-group">
+                <label for="">Religion:</label>
+                <select 
+                 class="form-control"
+                 name="religion"
+                 [(ngModel)]="step2.religion"
+                 #step2Religion
+                 required
+                 pattern="[1-9]" 
+                 [ngClass]="{'is-invalid':step2Religion.errors && step2Religion.touched}"
+                 (ngModelChange)="loadCasteByReligion($event)"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(religionList);" [ngValue]="key">{{religionList[key]}}</option>
+                </select>
+                <div [hidden]="!step2Religion.errors?.pattern" class="invalid-feedback">
+                    Please choose your religion.
+                </div>
+            </div>
+
+            <div *ngIf="casteDisplayFlag == true" class="form-group">
+                <label for="">Caste:</label>
+                <select 
+                 class="form-control"
+                 name="caste"
+                 [(ngModel)]="step2.caste"
+                 #step2Caste
+                 required
+                 pattern="[1-9]" 
+                 [ngClass]="{'is-invalid':step2Caste.errors && step2Caste.touched}"
+                 (ngModelChange)="loadSubCasteByCaste($event)"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(casteList);" [ngValue]="key">{{casteList[key]}}</option>
+                </select>
+                <div [hidden]="!step2Caste.errors?.pattern" class="invalid-feedback">
+                    Please choose your caste.
+                </div>
+            </div>
+
+            <div *ngIf="subCasteDisplayFlag == true" class="form-group">
+                <label for="">Sub Caste:</label>
+                <select 
+                 class="form-control"
+                 name="subCaste"
+                 [(ngModel)]="step2.subCaste"
+                 #step2SubCaste
+                 required
+                 pattern="[1-9]" 
+                 [ngClass]="{'is-invalid':step2SubCaste.errors && step2SubCaste.touched}"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(subCasteList);" [ngValue]="key">{{subCasteList[key]}}</option>
+                </select>
+                <div [hidden]="!step2SubCaste.errors?.pattern" class="invalid-feedback">
+                    Please choose your sub-caste.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Dosham:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="doshamYes" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="dosham" id="doshamYes" [(ngModel)]="step2.dosham" #step2Dosham [value]="1"> Yes
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="doshamNo" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="dosham" id="doshamNo" [(ngModel)]="step2.dosham" #step2Dosham [value]="0"> No
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="doshamDontKnow" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="dosham" id="doshamDontKnow" [(ngModel)]="step2.dosham" #step2Dosham [value]="2"> Don't Know
+                    </label>
+                </div>
+            </div>
+
+            <h5>Personal Details</h5>
+            <div class="form-group">
+                <label for="">Marital Status:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="maritalStatusNever" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="maritalStatus" id="maritalStatusNever" [(ngModel)]="step2.maritalStatus" #step2MaritalStatus [value]="1" (ngModelChange)="onChangeMaritalStatus($event)"> Never Married
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="maritalStatusDivorced" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="maritalStatus" id="maritalStatusDivorced" [(ngModel)]="step2.maritalStatus" #step2MaritalStatus [value]="2" (ngModelChange)="onChangeMaritalStatus($event)"> Divorced
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="maritalStatusAwaitingDivorced" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="maritalStatus" id="maritalStatusAwaitingDivorced" [(ngModel)]="step2.maritalStatus" #step2MaritalStatus [value]="3" (ngModelChange)="onChangeMaritalStatus($event)"> Awaiting divorce
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="maritalStatusWidowed" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="maritalStatus" id="maritalStatusWidowed" [(ngModel)]="step2.maritalStatus" #step2MaritalStatus [value]="4" (ngModelChange)="onChangeMaritalStatus($event)"> Widowed
+                    </label>
+                </div>
+            </div>
+
+            <div *ngIf="childrensDisplayFlag == true" class="form-group">
+                <label for="">Number of Children:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="childrensNone" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="childrens" id="childrensNone" [(ngModel)]="step2.childrens" #step2Childrens [value]="0"> None
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="childrens1" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="childrens" id="childrens1" [(ngModel)]="step2.childrens" #step2Childrens [value]="1"> 1
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="childrens2" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="childrens" id="childrens2" [(ngModel)]="step2.childrens" #step2Childrens [value]="2"> 2
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="childrens3" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="childrens" id="childrens3" [(ngModel)]="step2.childrens" #step2Childrens [value]="3"> 3 and above
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Mother Tongue:</label>
+                <select 
+                    name="motherTongue" 
+                    class="form-control" 
+                    [(ngModel)]="step2.motherTongue" 
+                    required
+                    pattern="[1-9]" 
+                    #step2MotherTongue="ngModel"
+                    [ngClass]="{'is-invalid':step2MotherTongue.errors && step2MotherTongue.touched}"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(motherToungeList)" [ngValue]="key">{{motherToungeList[key]}}</option>
+                </select>
+                <div [hidden]="!step2MotherTongue.errors?.pattern" class="invalid-feedback">
+                    Please choose mother tongue.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Any Disability:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="step2Disability" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="disability" id="disabilityNo" [(ngModel)]="step2.disability" #step2Disability [value]="0"> No
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="disabilityYes" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="disability" id="disabilityYes" [(ngModel)]="step2.disability" #step2Disability [value]="1"> Yes
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">About you:</label>
+                <textarea name="desc" [(ngModel)]="step2.desc" class="form-control"></textarea>
+            </div>
+
+            <h5>Family Details</h5>
+            <div class="form-group">
+                <label for="">Family Status:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="familyStatusMC" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="familyStatus" id="familyStatusMC" [(ngModel)]="step2.familyStatus" #step2FamilyStatus [value]="1"> Middle class
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="familyStatusUMC" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="familyStatus" id="familyStatusUMC" [(ngModel)]="step2.familyStatus" #step2FamilyStatus [value]="2"> Upper Middle class
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="familyStatusR" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="familyStatus" id="familyStatusR" [(ngModel)]="step2.familyStatus" #step2FamilyStatus [value]="3"> Rich
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Family Type:</label>
+                <div class="form-check-inline ml-3">
+                    <label for="familyTypeJF" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="familyType" id="familyTypeJF" [(ngModel)]="step2.familyType" #step2FamilyType [value]="1"> Nuclear Family
+                    </label>
+                </div>
+                <div class="form-check-inline ml-3">
+                    <label for="familyTypeNF" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="familyType" id="familyTypeNF" [(ngModel)]="step2.familyType" #step2FamilyType [value]="2"> Joint Family
+                    </label>
+                </div>
+
+                <div class="form-check-inline ml-3">
+                    <label for="familyTypeEF" class="form-check-label">
+                        <input type="radio" class="form-check-input" name="familyType" id="familyTypeEF" [(ngModel)]="step2.familyType" #step2FamilyType [value]="3"> Extended Family
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Number of brothers:</label>
+                <input type="number" 
+                    min="0"
+                    max="10"
+                    class="form-control" 
+                    name="numberOfBrothers"
+                    [(ngModel)]="step2.numberOfBrothers"
+                    #step2numberOfBrothers="ngModel"
+                    required
+                    pattern="[0-9]"
+                    (ngModelChange)="onChangeNOB($event)"
+                    [ngClass]="{'is-invalid':step2numberOfBrothers.errors && step2numberOfBrothers.touched}"
+                />
+                <div [hidden]="!step2numberOfBrothers.errors?.required" class="invalid-feedback">
+                    Please enter number of brothers.
+                </div>
+                <div [hidden]="!step2numberOfBrothers.errors?.pattern" class="invalid-feedback">
+                    Number of brothers should be numbers.
+                </div>
+            </div>
+
+            <div *ngIf="noBMDisplayFlag == true" class="form-group">
+                <label for="">Number of brothers married:</label>
+                <input type="number" 
+                    min="0"
+                    max="10"
+                    class="form-control" 
+                    name="numberOfBrothersMarried"
+                    [(ngModel)]="step2.numberOfBrothersMarried"
+                    #step2numberOfBrothersMarried="ngModel"
+                    required
+                    pattern="[0-9]"
+                    [ngClass]="{'is-invalid':step2numberOfBrothersMarried.errors && step2numberOfBrothersMarried.touched}"
+                />
+                <div [hidden]="!step2numberOfBrothersMarried.errors?.required" class="invalid-feedback">
+                    Please enter number of brothers married.
+                </div>
+                <div [hidden]="!step2numberOfBrothersMarried.errors?.pattern" class="invalid-feedback">
+                    Number of brothers married should be numbers.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Number of sisters:</label>
+                <input type="number" 
+                    min="0"
+                    max="10"
+                    class="form-control" 
+                    name="numberOfSisters"
+                    [(ngModel)]="step2.numberOfSisters"
+                    #step2numberOfSisters="ngModel"
+                    required
+                    pattern="[0-9]"
+                    (ngModelChange)="onChangeNOS($event)"
+                    [ngClass]="{'is-invalid':step2numberOfSisters.errors && step2numberOfSisters.touched}"
+                />
+                <div [hidden]="!step2numberOfSisters.errors?.required" class="invalid-feedback">
+                    Please enter number of sisters.
+                </div>
+                <div [hidden]="!step2numberOfSisters.errors?.pattern" class="invalid-feedback">
+                    Number of sisters should be numbers.
+                </div>
+            </div>
+
+            <div *ngIf="noSMDisplayFlag == true" class="form-group">
+                <label for="">Number of sisters married:</label>
+                <input type="number" 
+                    min="0"
+                    max="10"
+                    class="form-control" 
+                    name="numberOfSistersMarried"
+                    [(ngModel)]="step2.numberOfSistersMarried"
+                    #step2numberOfSistersMarried="ngModel"
+                    required
+                    pattern="[0-9]"
+                    [ngClass]="{'is-invalid':step2numberOfSistersMarried.errors && step2numberOfSistersMarried.touched}"
+                />
+                <div [hidden]="!step2numberOfSistersMarried.errors?.required" class="invalid-feedback">
+                    Please enter number of sisters married.
+                </div>
+                <div [hidden]="!step2numberOfSistersMarried.errors?.pattern" class="invalid-feedback">
+                    Number of sisters married should be numbers.
+                </div>
+            </div>
+
+
+            <h5>Educational Details</h5>
+            <div class="form-group">
+                <label for="">Highest Education:</label>
+                <select 
+                    name="eduction" 
+                    class="form-control" 
+                    [(ngModel)]="step2.eduction" 
+                    required
+                    pattern="^[1-9][0-9]*$" 
+                    #step2Eduction="ngModel"
+                    [ngClass]="{'is-invalid':step2Eduction.errors && step2Eduction.touched}"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(eductionList)" [ngValue]="key">{{eductionList[key]}}</option>
+                </select>
+                <div [hidden]="!step2Eduction.errors?.pattern" class="invalid-feedback">
+                    Please choose highest education.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Occupation:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="occupation"
+                    [(ngModel)]="step2.occupation"
+                    #step2Occupation="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2Occupation.errors && step2Occupation.touched}"
+                />
+                <div [hidden]="!step2Occupation.errors?.required" class="invalid-feedback">
+                    Please enter the occupation.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Current Location:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="currentLocation"
+                    [(ngModel)]="step2.currentLocation"
+                    #step2CurrentLocation="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2CurrentLocation.errors && step2CurrentLocation.touched}"
+                />
+                <div [hidden]="!step2CurrentLocation.errors?.required" class="invalid-feedback">
+                    Please enter current location.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Annual Income:</label>
+                <select 
+                    name="income" 
+                    class="form-control" 
+                    [(ngModel)]="step2.income" 
+                    required
+                    pattern="^[1-9][0-9]*$" 
+                    #step2Income="ngModel"
+                    [ngClass]="{'is-invalid':step2Income.errors && step2Income.touched}"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(incomeRangeList)" [ngValue]="key">{{incomeRangeList[key]}}</option>
+                </select>
+                <div [hidden]="!step2Income.errors?.pattern" class="invalid-feedback">
+                    Please choose annual income.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-success mr-3" (click)="goBack()">Back</button>
+                <button class="btn btn-success" [disabled]="!signupStep2Form.form.valid">Complete</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="container hr">
+       Object JSON:  {{signupFormData | json}}
+    </div>
+</div>
