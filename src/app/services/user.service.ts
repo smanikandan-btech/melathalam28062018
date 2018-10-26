@@ -206,4 +206,35 @@ export class UserService {
       catchError(this.handleError)
     );
   }
+
+
+  completeRegistration(params){
+    const headers = new HttpHeaders({
+      'Content-Type' : 'application/json; charset=UTF-8'
+    });
+
+    return this.http.post<ResponseBody>(
+      this.globalService.apiHost + '/users/users/signup',
+      JSON.stringify(params),
+      {
+        headers: headers
+      }
+    ).pipe(
+      map((response: any) => {
+        if(response.success && typeof response.data.access_token !== 'undefined'){
+          this.localStorage.setItem(environment.tokenName, response.data.access_token);
+          //this.loggedIn = true;
+          //this.loggedIn.of<boolean>(true);
+          this.loggedInSource.next(true);
+          return response;
+        } else {
+          this.localStorage.removeItem(environment.tokenName);
+          //this.loggedIn = false;
+          this.loggedInSource.next(false);
+          return {success: false, data: 'Your login credentials are not matching with our records. Please try again.'};
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
 }

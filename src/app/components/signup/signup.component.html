@@ -284,6 +284,39 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="">Height:</label>
+                <select 
+                    name="height" 
+                    class="form-control" 
+                    [(ngModel)]="step2.height" 
+                    required
+                    #step2Height="ngModel"
+                    [ngClass]="{'is-invalid':step2Height.errors && step2Height.touched}"
+                >
+                    <option [ngValue]="0">--Select--</option>
+                    <option *ngFor="let key of Object.keys(heightList)" [ngValue]="key">{{heightList[key]}}</option>
+                </select>
+                <div [hidden]="!step2Height.errors?.pattern" class="invalid-feedback">
+                    Please choose mother tongue.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Color:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="color"
+                    [(ngModel)]="step2.color"
+                    #step2Color="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2Color.errors && step2Color.touched}"
+                />
+                <div [hidden]="!step2Color.errors?.required" class="invalid-feedback">
+                    Please enter color.
+                </div>
+            </div>
+
             <div *ngIf="childrensDisplayFlag == true" class="form-group">
                 <label for="">Number of Children:</label>
                 <div class="form-check-inline ml-3">
@@ -342,7 +375,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">About you:</label>
+                <label for="">About {{userLabel == 'Your' ? 'You' : 'your '+userLabel | lowercase}}:</label>
                 <textarea name="desc" [(ngModel)]="step2.desc" class="form-control"></textarea>
             </div>
 

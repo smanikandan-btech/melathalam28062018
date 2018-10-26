@@ -13,12 +13,13 @@ export class SignupComponent implements OnInit {
   private userLabel:string = 'Your';
   private utilityResponse: any = null;
   private currentStep: string = '';
-  private profileForList;
+  private profileForList: number[] = [];
   private profileFor: number;
 
   private days:number[] = [];
   private months:string[] = [];
   private years:number[] = [];
+  private heightList: any[] = [];
 
   private genders:string[] = [];
   private genderDisplayFlag:boolean = true;
@@ -59,6 +60,7 @@ export class SignupComponent implements OnInit {
     disability: 0,
     motherTongue: 0,
     desc: '',
+    color:'',
 
     //Family Details
     familyStatus: 0,
@@ -121,6 +123,7 @@ export class SignupComponent implements OnInit {
     this.step2.familyStatus = 1;
     this.step2.familyType = 1;
     this.step2.motherTongue = 0;
+    this.step2.height = '';
 
     this.step2.numberOfBrothers = 0;
     this.step2.numberOfBrothersMarried = 0;
@@ -147,6 +150,7 @@ export class SignupComponent implements OnInit {
       this.incomeRangeList = this.utilityResponse.income;
       this.motherToungeList = this.utilityResponse.language;
       this.religionList = this.utilityResponse.religion;
+      this.heightList = this.utilityResponse.height;
       this.casteDisplayFlag = false;
       this.casteList = [];
       this.subCasteDisplayFlag = false;
@@ -258,6 +262,26 @@ export class SignupComponent implements OnInit {
       this.signupFormData.employedIn = value.employedIn;
       this.signupFormData.occupation = value.occupation;
       this.signupFormData.income = value.income;
+
+
+      this.userService.getCaste(value).subscribe((data: any) => {
+        if(data !== false && Object.keys(data).length){
+          this.casteDisplayFlag = true;
+          this.casteList = data;
+        } else {
+          this.casteList = [];
+          this.casteDisplayFlag = false;
+        }
+        this.subCasteDisplayFlag = false;
+        this.subCasteList = [];
+  
+        this.step2.caste = 0;
+        this.step2.subCaste = 0;
+      });
+
+
+
+
       console.log('Signup step2 form submitted.');
     }
   }

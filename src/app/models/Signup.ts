@@ -23,6 +23,7 @@ export class SignupFormData{
   disability: number;
   motherTongue: number;
   desc: string;
+  color: string;
 
   //Family Details
   familyStatus: number;
@@ -66,6 +67,7 @@ export class Step2{
   maritalStatus: number;
   childrens: number;
   height: string;
+  color: string;
   disability: number;
   motherTongue: number;
   desc: string;
