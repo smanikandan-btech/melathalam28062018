@@ -245,43 +245,33 @@ export class SignupComponent implements OnInit {
       this.signupFormData.caste = value.caste;
       this.signupFormData.subCaste = value.subCaste;
       this.signupFormData.dosham = value.dosham;
+
       this.signupFormData.maritalStatus = value.maritalStatus;
       this.signupFormData.childrens = value.childrens;
       this.signupFormData.height = value.height;
-      this.signupFormData.disability = value.disability;
+      this.signupFormData.color = value.color;
       this.signupFormData.motherTongue = value.motherTongue;
+      this.signupFormData.disability = value.disability;      
       this.signupFormData.desc = value.desc;
+
       this.signupFormData.familyStatus = value.familyStatus;
       this.signupFormData.familyType = value.familyType;
-      this.signupFormData.familyValue = value.familyValue;
+      //this.signupFormData.familyValue = value.familyValue;
       this.signupFormData.numberOfBrothers = value.numberOfBrothers;
       this.signupFormData.numberOfBrothersMarried = value.numberOfBrothersMarried;
       this.signupFormData.numberOfSisters = value.numberOfSisters;
       this.signupFormData.numberOfSistersMarried = value.numberOfSistersMarried;
+
       this.signupFormData.eduction = value.eduction;
-      this.signupFormData.employedIn = value.employedIn;
+      //this.signupFormData.employedIn = value.employedIn;
       this.signupFormData.occupation = value.occupation;
+      this.signupFormData.currentLocation = value.currentLocation;
       this.signupFormData.income = value.income;
 
 
-      this.userService.getCaste(value).subscribe((data: any) => {
-        if(data !== false && Object.keys(data).length){
-          this.casteDisplayFlag = true;
-          this.casteList = data;
-        } else {
-          this.casteList = [];
-          this.casteDisplayFlag = false;
-        }
-        this.subCasteDisplayFlag = false;
-        this.subCasteList = [];
-  
-        this.step2.caste = 0;
-        this.step2.subCaste = 0;
+      this.userService.completeRegistration(this.signupFormData).subscribe((data: any) => {
+        console.log(data);
       });
-
-
-
-
       console.log('Signup step2 form submitted.');
     }
   }
