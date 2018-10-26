@@ -13,7 +13,7 @@ export class SignupFormData{
   religion: number;
   caste:number;
   subCaste: number;
-  //gothram: number;
+  gothram: string;
   dosham: number;
 
   //Personal Details
@@ -24,6 +24,7 @@ export class SignupFormData{
   motherTongue: number;
   desc: string;
   color: string;
+  eatingHabit: number;
 
   //Family Details
   familyStatus: number;
@@ -33,6 +34,8 @@ export class SignupFormData{
   numberOfBrothersMarried: number;
   numberOfSisters:number;
   numberOfSistersMarried: number;
+  origin:string;
+  familyLocation: string;
   
   //Professional Details
   eduction: number;
@@ -52,7 +55,10 @@ export class Step1{
   confirmPassword: string;
   mobile: string;
   gender: number;
-  dob: string;
+  //dob: string;
+  dobyear: number;
+  dobmonth: number;
+  dobdate: number;
 }
 
 export class Step2{
@@ -60,7 +66,7 @@ export class Step2{
   religion: number;
   caste:number;
   subCaste: number;
-  //gothram: number;
+  gothram: string;
   dosham: number;
 
   //Personal Details
@@ -71,6 +77,7 @@ export class Step2{
   disability: number;
   motherTongue: number;
   desc: string;
+  eatingHabit: number;
 
   //Family Details
   familyStatus: number;
@@ -80,6 +87,8 @@ export class Step2{
   numberOfBrothersMarried: number;
   numberOfSisters:number;
   numberOfSistersMarried: number;
+  origin: string;
+  familyLocation: string;
   
   //Professional Details
   eduction: number;

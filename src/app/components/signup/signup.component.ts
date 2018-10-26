@@ -20,6 +20,7 @@ export class SignupComponent implements OnInit {
   private months:string[] = [];
   private years:number[] = [];
   private heightList: any[] = [];
+  private eatingHabitList: any[] = [];
 
   private genders:string[] = [];
   private genderDisplayFlag:boolean = true;
@@ -35,12 +36,17 @@ export class SignupComponent implements OnInit {
     password: '',
     confirmPassword: '',
     mobile: '',
-    gender: 0,
-    dob: ''
+    gender: 1,
+    dobyear: 0,
+    dobmonth: 0,
+    dobdate: 0,
   };
   @ViewChild('signupStep1Form') form: any;
 
 
+  private familyStatusList: any[] = [];
+  private familyTypeList: any[] = [];
+  private familyValueList: any[] = [];
   private eductionList: any[] = [];
   private incomeRangeList: any[] = [];
   private religionList: any[] = [];
@@ -50,7 +56,7 @@ export class SignupComponent implements OnInit {
     religion: 0,
     caste: 0,
     subCaste: 0,
-    //gothram: 0,
+    gothram: '',
     dosham: 0,
 
     //Personal Details
@@ -61,6 +67,14 @@ export class SignupComponent implements OnInit {
     motherTongue: 0,
     desc: '',
     color:'',
+    eatingHabit: 1,
+
+    //Professional Details
+    eduction: 0,
+    employedIn: 0,
+    occupation: '',
+    currentLocation: '',
+    income: 0,
 
     //Family Details
     familyStatus: 0,
@@ -70,14 +84,10 @@ export class SignupComponent implements OnInit {
     numberOfBrothersMarried: 0,
     numberOfSisters:0,
     numberOfSistersMarried: 0,
-
-    //Professional Details
-    eduction: 0,
-    employedIn: 0,
-    occupation: '',
-    currentLocation: '',
-    income: 0
+    origin:'',
+    familyLocation: '',
   }
+
   @ViewChild('signupStep2Form') form1: any;
   /*************** ****************/
   constructor(
@@ -124,6 +134,7 @@ export class SignupComponent implements OnInit {
     this.step2.familyType = 1;
     this.step2.motherTongue = 0;
     this.step2.height = '';
+    this.step2.eatingHabit = 1;
 
     this.step2.numberOfBrothers = 0;
     this.step2.numberOfBrothersMarried = 0;
@@ -139,7 +150,7 @@ export class SignupComponent implements OnInit {
 
       this.signupFormData.profileFor = value.profileFor;
       this.signupFormData.name = value.name;
-      this.signupFormData.dob = value.dob;
+      this.signupFormData.dob = value.dobyear+'-'+value.dobmonth+'-'+value.dobdate;
       this.signupFormData.gender = value.gender;
       this.signupFormData.mobile = value.mobile;
       this.signupFormData.email = value.email;
@@ -151,6 +162,11 @@ export class SignupComponent implements OnInit {
       this.motherToungeList = this.utilityResponse.language;
       this.religionList = this.utilityResponse.religion;
       this.heightList = this.utilityResponse.height;
+      this.eatingHabitList = this.utilityResponse.eatingHabits;
+      this.familyStatusList = this.utilityResponse.familyStatus;
+      this.familyTypeList = this.utilityResponse.familyType;
+      this.familyValueList = this.utilityResponse.familyValue;
+
       this.casteDisplayFlag = false;
       this.casteList = [];
       this.subCasteDisplayFlag = false;
@@ -245,6 +261,7 @@ export class SignupComponent implements OnInit {
       this.signupFormData.caste = value.caste;
       this.signupFormData.subCaste = value.subCaste;
       this.signupFormData.dosham = value.dosham;
+      this.signupFormData.gothram = value.gothram;
 
       this.signupFormData.maritalStatus = value.maritalStatus;
       this.signupFormData.childrens = value.childrens;
@@ -253,14 +270,17 @@ export class SignupComponent implements OnInit {
       this.signupFormData.motherTongue = value.motherTongue;
       this.signupFormData.disability = value.disability;      
       this.signupFormData.desc = value.desc;
+      this.signupFormData.eatingHabit = value.eatingHabit;
 
       this.signupFormData.familyStatus = value.familyStatus;
       this.signupFormData.familyType = value.familyType;
-      //this.signupFormData.familyValue = value.familyValue;
+      this.signupFormData.familyValue = value.familyValue;
       this.signupFormData.numberOfBrothers = value.numberOfBrothers;
       this.signupFormData.numberOfBrothersMarried = value.numberOfBrothersMarried;
       this.signupFormData.numberOfSisters = value.numberOfSisters;
       this.signupFormData.numberOfSistersMarried = value.numberOfSistersMarried;
+      this.signupFormData.origin = value.origin;
+      this.signupFormData.familyLocation = value.familyLocation;
 
       this.signupFormData.eduction = value.eduction;
       //this.signupFormData.employedIn = value.employedIn;
