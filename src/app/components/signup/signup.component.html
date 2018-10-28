@@ -412,10 +412,10 @@
             <div class="form-group">
                 <label for="">Family Status:</label>
                 <div class="form-check-inline ml-3"
-                *ngFor="let key of Object.keys(familyStatusList)"
+                *ngFor="let key of Object.keys(familyStatusList); let first = first;"
                 >
                     <label for="familyStatusMC" class="form-check-label">
-                        <input type="radio" class="form-check-input" name="familyStatus" id="familyStatusMC" [(ngModel)]="step2.familyStatus" #step2FamilyStatus [value]="key">{{familyStatusList[key]}}
+                        <input type="radio" class="form-check-input" name="familyStatus" id="familyStatusMC" [(ngModel)]="step2.familyStatus" #step2FamilyStatus [value]="key" [checked]="first">{{familyStatusList[key]}} {{first}}
                     </label>
                 </div>
             </div>
@@ -437,6 +437,66 @@
                     <label for="familyValue_{{key}}" class="form-check-label">
                         <input type="radio" class="form-check-input" name="familyValue" id="familyValue_{{key}}" [(ngModel)]="step2.familyValue" #step2familyValue [value]="key">{{familyValueList[key]}}
                     </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Father Name:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="fatherName"
+                    [(ngModel)]="step2.fatherName"
+                    #step2FatherName="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2FatherName.errors && step2FatherName.touched}"
+                />
+                <div [hidden]="!step2FatherName.errors?.required" class="invalid-feedback">
+                    Please enter father name.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Father Work:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="fatherStatus"
+                    [(ngModel)]="step2.fatherStatus"
+                    #step2FatherStatus="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2FatherStatus.errors && step2FatherStatus.touched}"
+                />
+                <div [hidden]="!step2FatherStatus.errors?.required" class="invalid-feedback">
+                    Please enter father work status.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Mother Name:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="motherName"
+                    [(ngModel)]="step2.motherName"
+                    #step2MotherName="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2MotherName.errors && step2MotherName.touched}"
+                />
+                <div [hidden]="!step2MotherName.errors?.required" class="invalid-feedback">
+                    Please enter mother name.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Mother Work:</label>
+                <input type="text" 
+                    class="form-control" 
+                    name="motherStatus"
+                    [(ngModel)]="step2.motherStatus"
+                    #step2MotherStatus="ngModel"
+                    required
+                    [ngClass]="{'is-invalid':step2MotherStatus.errors && step2MotherStatus.touched}"
+                />
+                <div [hidden]="!step2MotherStatus.errors?.required" class="invalid-feedback">
+                    Please enter mother work status.
                 </div>
             </div>
 

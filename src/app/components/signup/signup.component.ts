@@ -77,9 +77,13 @@ export class SignupComponent implements OnInit {
     income: 0,
 
     //Family Details
-    familyStatus: 0,
-    familyType: 0,
-    familyValue: 0,
+    familyStatus: 1,
+    familyType: 1,
+    familyValue: 1,
+    fatherName: '',
+    fatherStatus: '',
+    motherName: '',
+    motherStatus: '',
     numberOfBrothers:0,
     numberOfBrothersMarried: 0,
     numberOfSisters:0,
@@ -130,12 +134,13 @@ export class SignupComponent implements OnInit {
     this.step2.maritalStatus = 1;
     this.step2.childrens = 0;
     this.step2.disability = 0;
-    this.step2.familyStatus = 1;
-    this.step2.familyType = 1;
     this.step2.motherTongue = 0;
     this.step2.height = '';
     this.step2.eatingHabit = 1;
 
+    this.step2.familyStatus = 1;
+    this.step2.familyType = 1;
+    this.step2.familyValue = 1;
     this.step2.numberOfBrothers = 0;
     this.step2.numberOfBrothersMarried = 0;
     this.step2.numberOfSisters = 0;
@@ -275,6 +280,10 @@ export class SignupComponent implements OnInit {
       this.signupFormData.familyStatus = value.familyStatus;
       this.signupFormData.familyType = value.familyType;
       this.signupFormData.familyValue = value.familyValue;
+      this.signupFormData.fatherName = value.fatherName;
+      this.signupFormData.fatherStatus = value.fatherStatus;
+      this.signupFormData.motherName = value.motherName;
+      this.signupFormData.motherStatus = value.motherStatus;
       this.signupFormData.numberOfBrothers = value.numberOfBrothers;
       this.signupFormData.numberOfBrothersMarried = value.numberOfBrothersMarried;
       this.signupFormData.numberOfSisters = value.numberOfSisters;

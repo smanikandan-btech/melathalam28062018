@@ -30,6 +30,10 @@ export class SignupFormData{
   familyStatus: number;
   familyType: number;
   familyValue: number;
+  fatherName: string;
+  fatherStatus: string;
+  motherName: string;
+  motherStatus: string;
   numberOfBrothers:number;
   numberOfBrothersMarried: number;
   numberOfSisters:number;
@@ -83,6 +87,10 @@ export class Step2{
   familyStatus: number;
   familyType: number;
   familyValue: number;
+  fatherName: string;
+  fatherStatus: string;
+  motherName: string;
+  motherStatus: string;
   numberOfBrothers:number;
   numberOfBrothersMarried: number;
   numberOfSisters:number;

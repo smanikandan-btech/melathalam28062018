@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+/*import { Injectable } from '@angular/core';
 import { SignupFormData, Step1, Step2 } from '../models/Signup';
 @Injectable()
 export class FormDataService{
@@ -13,7 +13,7 @@ export class FormDataService{
     var step1: Step1 = {
       profileFor: this.formData.profileFor,
       name: this.formData.name,
-      dob: this.formData.dob,
+      //dob: this.formData.dob,
       email: this.formData.email,
       password: this.formData.password,
       confirmPassword: this.formData.confirmPassword,
@@ -26,11 +26,11 @@ export class FormDataService{
   setStep1(data: Step1){
     this.formData.profileFor = data.profileFor;
     this.formData.name = data.name;
-    this.formData.dob = data.dob;
+    //this.formData.dob = data.dob;
     this.formData.email = data.email;
     this.formData.password = data.password;
     this.formData.confirmPassword = data.confirmPassword;
     this.formData.gender = data.gender;
     this.formData.mobile = data.mobile;
   }
-}
+}*/
