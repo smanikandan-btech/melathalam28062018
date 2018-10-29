@@ -221,17 +221,14 @@ export class UserService {
       }
     ).pipe(
       map((response: any) => {
-        if(response.success && typeof response.data.access_token !== 'undefined'){
-          this.localStorage.setItem(environment.tokenName, response.data.access_token);
-          //this.loggedIn = true;
-          //this.loggedIn.of<boolean>(true);
-          this.loggedInSource.next(true);
-          return response;
+        if(response.success){
+          if(typeof response.data.result !== undefined && response.data.result == 'success'){
+            return {success: true, text: response.data.message};
+          } else {
+            return {success: false};
+          }
         } else {
-          this.localStorage.removeItem(environment.tokenName);
-          //this.loggedIn = false;
-          this.loggedInSource.next(false);
-          return {success: false, data: 'Your login credentials are not matching with our records. Please try again.'};
+          return {success: false, data: 'Your registration failed.'};
         }
       }),
       catchError(this.handleError)

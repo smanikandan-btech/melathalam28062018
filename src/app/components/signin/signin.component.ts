@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 //import { AuthenticationService } from '../../services/authentication.service';
 import { UserService } from '../../services/user.service';
+import { AlertService } from '../../services/alert.service';
 import { Login } from '../../models/Login';
 
 @Component({
@@ -13,15 +14,14 @@ import { Login } from '../../models/Login';
 export class SigninComponent implements OnInit {
   returnURL: string = '/';
   login: Login;
-  public showSuccessMessage: string = '';
-  public showErrorMessage: string = '';
   public showSpinnerFlag: boolean = false;
   @ViewChild('loginForm') form: any;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private alertService: AlertService) { }
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
@@ -34,20 +34,22 @@ export class SigninComponent implements OnInit {
       console.log('Form is not valid');
     } else {
       this.showSpinnerFlag = true;
-      this.userService.login(value.email, value.password).subscribe(response => {
-        if(response.success){
-          console.log('Login Successful.');
-          this.showSuccessMessage = 'Login Successful.';
-          this.router.navigate([this.returnURL]);
-        } else {
-          console.log('Login Failed...');
-          this.showErrorMessage = response.data;
+      this.userService.login(value.email, value.password).subscribe(
+        response => {
+          if(response.success){
+            console.log('Login Successful.');
+            this.alertService.success('Login Successful.', true);
+            this.router.navigate([this.returnURL]);
+          } else {
+            console.log('Login Failed...');
+            this.alertService.error('Login Failed...', true);
+            this.showSpinnerFlag = false;
+          }
+        }, err => {
+          this.alertService.error(err);
           this.showSpinnerFlag = false;
         }
-      }, err => {
-        this.showSpinnerFlag = false;
-        this.showErrorMessage = err.data;
-      });
+      );
     }
   }
 }

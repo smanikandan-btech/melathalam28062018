@@ -16,11 +16,13 @@ import { ClientComponent } from './components/client/client.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 import { AuthGuard } from './_guard/auth.guard';
 import { UserService } from './/services/user.service';
 import { GlobalService } from './/services/global.service';
 import { AuthenticationService } from './/services/authentication.service';
+import { AlertService } from './/services/alert.service';
 //import { FormDataService } from './/services/form-data.service';
 
 import { NgtUniversalModule } from '@ng-toolkit/universal';
@@ -48,7 +50,8 @@ export function jwtOptionsFactory(localStorage) {
     ClientFormComponent,
     ClientComponent,
     NotFoundComponent,
-    SettingsComponent
+    SettingsComponent,
+    AlertComponent
   ],
   imports:[
     CommonModule,
@@ -69,6 +72,7 @@ export function jwtOptionsFactory(localStorage) {
     UserService,
     AuthenticationService,
     GlobalService,
+    AlertService,
     //{provide: FormDataService, useClass: FormDataService}
   ],
 })

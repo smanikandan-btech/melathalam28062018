@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SignupFormData, Step1, Step2 } from '../../models/Signup';
 import { UserService } from '../../services/user.service';
+import { AlertService } from '../../services/alert.service';
 import { ResponseBody } from '../../models/response-body';
 
 @Component({
@@ -10,6 +11,7 @@ import { ResponseBody } from '../../models/response-body';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  returnURL: string = '/register';
   private userLabel:string = 'Your';
   private utilityResponse: any = null;
   private currentStep: string = '';
@@ -97,7 +99,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -145,6 +148,9 @@ export class SignupComponent implements OnInit {
     this.step2.numberOfBrothersMarried = 0;
     this.step2.numberOfSisters = 0;
     this.step2.numberOfSistersMarried = 0;
+
+    // get return url from route parameters or default to '/'
+    this.returnURL = this.activatedRoute.snapshot.queryParams['r'] || '/register';
   }
 
   onSubmit({value, valid}: {value: Step1, valid: boolean}){
@@ -297,9 +303,14 @@ export class SignupComponent implements OnInit {
       this.signupFormData.currentLocation = value.currentLocation;
       this.signupFormData.income = value.income;
 
-
       this.userService.completeRegistration(this.signupFormData).subscribe((data: any) => {
-        console.log(data);
+        if(data.success){
+          console.log('Registration Successful.');
+          this.alertService.success(data.text, true);
+          this.router.navigate(['/signin']);
+        } else {
+          this.alertService.error('Registration failed.');
+        }
       });
       console.log('Signup step2 form submitted.');
     }

@@ -1,15 +1,6 @@
 <div class="col-md-6 m-auto h-100">
   <h2>Login</h2>
   <div class="container p-0">
-    <div class="alert alert-success alert-dismissible" *ngIf="showSuccessMessage != ''">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      {{showSuccessMessage}}
-    </div>
-    <div class="alert alert-danger alert-dismissible" *ngIf="showErrorMessage != ''">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      {{showErrorMessage}}
-    </div>
-
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
       <div class="form-group">
         <label>Email:</label>
