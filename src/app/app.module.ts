@@ -29,6 +29,7 @@ import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { environment } from '../environments/environment';
+import { ForgotpassComponent } from './components/forgotpass/forgotpass.component';
 
 export function jwtOptionsFactory(localStorage) {
   return {
@@ -51,7 +52,8 @@ export function jwtOptionsFactory(localStorage) {
     ClientComponent,
     NotFoundComponent,
     SettingsComponent,
-    AlertComponent
+    AlertComponent,
+    ForgotpassComponent
   ],
   imports:[
     CommonModule,

@@ -187,8 +187,6 @@ export class UserService {
     );
   }
 
-
-
   getSignupUtilities(){
     return this.http.get<ResponseBody>(
       this.globalService.apiHost + '/helper/signup-utility'
@@ -203,7 +201,6 @@ export class UserService {
       catchError(this.handleError)
     );
   }
-
 
   completeRegistration(params){
     const headers = new HttpHeaders({
@@ -228,6 +225,23 @@ export class UserService {
           return {success: false, text: 'Your registration failed.'};
         }
       }),
+      catchError(this.handleError)
+    );
+  }
+
+  forgotPassword(argEmail){
+    return this.http.post<ResponseBody>(
+      this.globalService.apiHost + '/users/users/forgot-password',
+      {
+        email: argEmail
+      },
+      {
+        headers: this.getHeaders()
+      }
+    ).pipe(
+      map((response: any) => {
+        console.log(response);
+      }), 
       catchError(this.handleError)
     );
   }

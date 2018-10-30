@@ -1,0 +1,35 @@
+<div class="col-md-6 m-auto h-100">
+  <h2>Forgot Password</h2>
+  <div class="container p-0">
+    <form #forgotPassForm="ngForm" (ngSubmit)="onSubmit(forgotPassForm)">
+      <div class="form-group">
+          <label>Email:</label>
+          <input 
+          type="text" 
+          [(ngModel)]="email" 
+          name="email" 
+          class="form-control" 
+          placeholder="Please enter email."
+          #emailForgotPass="ngModel"
+          required
+          pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+          [ngClass]="{'is-invalid': emailForgotPass.errors && emailForgotPass.touched}"/>
+          <div [hidden]="!emailForgotPass.errors?.required" class="invalid-feedback">
+            Email Required.
+          </div>
+          <div [hidden]="!emailForgotPass.errors?.pattern" class="invalid-feedback">
+            Invalid Email.
+          </div>
+      </div>
+
+      <button class="btn btn-default" type="submit" *ngIf="!showSpinnerFlag"
+      [disabled]="!forgotPassForm.form.valid">Submit</button>
+
+      <i class="fa fa-spinner fa-spin align-middle" style="font-size:24px"
+      *ngIf="showSpinnerFlag"></i>
+    </form>
+  </div>
+</div>
+
+
+
