@@ -157,8 +157,9 @@ export class SignupComponent implements OnInit {
     if(!valid){
       console.log('Signup form is not valid.');
     } else {
-      this.currentStep = 'step2';
+      window.scroll(0, 0);
 
+      this.currentStep = 'step2';
       this.signupFormData.profileFor = value.profileFor;
       this.signupFormData.name = value.name;
       this.signupFormData.dob = value.dobyear+'-'+value.dobmonth+'-'+value.dobdate;
@@ -167,40 +168,23 @@ export class SignupComponent implements OnInit {
       this.signupFormData.email = value.email;
       this.signupFormData.password = value.password;
       this.signupFormData.confirmPassword = value.confirmPassword;
+
+      if(!this.step2.caste){
+        this.eductionList = this.utilityResponse.education;
+        this.incomeRangeList = this.utilityResponse.income;
+        this.motherToungeList = this.utilityResponse.language;
+        this.religionList = this.utilityResponse.religion;
+        this.heightList = this.utilityResponse.height;
+        this.eatingHabitList = this.utilityResponse.eatingHabits;
+        this.familyStatusList = this.utilityResponse.familyStatus;
+        this.familyTypeList = this.utilityResponse.familyType;
+        this.familyValueList = this.utilityResponse.familyValue;
       
-      this.eductionList = this.utilityResponse.education;
-      this.incomeRangeList = this.utilityResponse.income;
-      this.motherToungeList = this.utilityResponse.language;
-      this.religionList = this.utilityResponse.religion;
-      this.heightList = this.utilityResponse.height;
-      this.eatingHabitList = this.utilityResponse.eatingHabits;
-      this.familyStatusList = this.utilityResponse.familyStatus;
-      this.familyTypeList = this.utilityResponse.familyType;
-      this.familyValueList = this.utilityResponse.familyValue;
-
-      this.casteDisplayFlag = false;
-      this.casteList = [];
-      this.subCasteDisplayFlag = false;
-      this.subCasteList = [];
-
-      /*this.userService.getReligions().subscribe((data: any) => {
-        if(data !== false){
-          this.religionList = data;
-        }
         this.casteDisplayFlag = false;
         this.casteList = [];
         this.subCasteDisplayFlag = false;
         this.subCasteList = [];
-      });
-
-      this.userService.getLanguages().subscribe((data: any) => {
-        if(data !== false){
-          this.motherToungeList = data;
-        } else {
-          this.motherToungeList = [];
-        }
-      });*/
-
+      }
       console.log('Step1 completed.');
     }
   }
@@ -304,12 +288,18 @@ export class SignupComponent implements OnInit {
       this.signupFormData.income = value.income;
 
       this.userService.completeRegistration(this.signupFormData).subscribe((data: any) => {
+        console.log(data);
         if(data.success){
           console.log('Registration Successful.');
           this.alertService.success(data.text, true);
           this.router.navigate(['/signin']);
         } else {
-          this.alertService.error('Registration failed.');
+          window.scroll(0, 0);
+          var errorTxt = '';
+          for(var responseText in data.text){
+            errorTxt = (errorTxt != '' ? errorTxt+"<br />" : '')+data.text[responseText];
+          }
+          this.alertService.error(errorTxt);
         }
       });
       console.log('Signup step2 form submitted.');
@@ -339,6 +329,7 @@ export class SignupComponent implements OnInit {
   }
 
   goBack(){
+    window.scroll(0, 0);
     this.currentStep = 'step1';
   }
 }
