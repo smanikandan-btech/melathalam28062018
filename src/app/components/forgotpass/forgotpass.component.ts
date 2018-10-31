@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ForgotPass } from '../../models/ForgotPass';
+import { AlertService  } from '../../services/alert.service';
 
 @Component({
   //selector: 'app-forgotpass',
@@ -9,7 +10,10 @@ import { ForgotPass } from '../../models/ForgotPass';
 })
 export class ForgotpassComponent implements OnInit {
   private showSpinnerFlag: boolean = false;
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private alertService: AlertService
+  ) { }
   ngOnInit() {
   }
 
@@ -19,17 +23,14 @@ export class ForgotpassComponent implements OnInit {
       console.log('Forgot password form is not valid');
     } else {
       this.showSpinnerFlag = true;
-
-      this.userService.forgotPassword(value.email).subscribe(
-        res => {
-          
-        },
-        err => {
-
+      this.userService.forgotPassword(value.email).subscribe((res:any) => {
+        if(res.success){
+          this.alertService.success(res.text, true);
+        } else {
+          this.alertService.error(res.text, true);
         }
-      );
-
-      console.log('Forgot password form is valid');
+        this.showSpinnerFlag = false;
+      });
     }
   }
 }

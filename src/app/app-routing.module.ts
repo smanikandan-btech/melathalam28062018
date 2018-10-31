@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 //import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';import { UsersComponent } from './components/users/users.component';
 import { SigninComponent } from './components/signin/signin.component';
-import{ ForgotpassComponent } from './components/forgotpass/forgotpass.component';
+import { ForgotpassComponent } from './components/forgotpass/forgotpass.component';
+import { SetpasswordComponent } from './components/setpassword/setpassword.component';
 import { SignupComponent } from './components/signup/signup.component';
 //import { NavbarComponent } from './components/navbar/navbar.component';
 //import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -20,7 +21,9 @@ const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'signin', component: SigninComponent},
   {path: 'forgot-password', component: ForgotpassComponent},
+  {path: 'set-password', component: SetpasswordComponent},
   {path: 'register', component: SignupComponent},
+  {path: 'confirm', component: UsersComponent},
   {path: 'clients', component: ClientsComponent, canActivate: [AuthGuard]},
   {path: 'client/:id', component: ClientComponent},
   {path: 'client/add', component: ClientFormComponent},

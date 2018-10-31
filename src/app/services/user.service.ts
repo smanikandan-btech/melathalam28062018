@@ -229,6 +229,27 @@ export class UserService {
     );
   }
 
+  confirmEmail(argCode){
+    return this.http.post<ResponseBody>(
+      this.globalService.apiHost + '/users/users/confirm',
+      {
+        id: argCode
+      },
+      {
+        headers: this.getHeaders()
+      }
+    ).pipe(
+      map((response: any) => {
+        if(response.success && response.data.result == 'success'){
+          return {success: true, text: response.data.msg};
+        } else {
+          return {success: false, text: response.data.msg};
+        }
+      }), 
+      catchError(this.handleError)
+    );
+  }
+
   forgotPassword(argEmail){
     return this.http.post<ResponseBody>(
       this.globalService.apiHost + '/users/users/forgot-password',
@@ -240,7 +261,34 @@ export class UserService {
       }
     ).pipe(
       map((response: any) => {
-        console.log(response);
+        if(response.success && response.data.result == 'success'){
+          return {success: true, text: response.data.msg};
+        } else {
+          return {success: false, text: response.data.msg};
+        }
+      }), 
+      catchError(this.handleError)
+    );
+  }
+
+  setPassword(pass, cpass, auth_id){
+    return this.http.post<ResponseBody>(
+      this.globalService.apiHost + '/users/users/set-password',
+      {
+        password: pass,
+        confirm_password: cpass,
+        id: auth_id
+      },
+      {
+        headers: this.getHeaders()
+      }
+    ).pipe(
+      map((response: any) => {
+        if(response.success && response.data.result == 'success'){
+          return {success: true, text: response.data.msg};
+        } else {
+          return {success: false, text: response.data.msg};
+        }
       }), 
       catchError(this.handleError)
     );
